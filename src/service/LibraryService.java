@@ -5,7 +5,9 @@ import algorithm.MergeSort;
 import model.Book;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class LibraryService {
@@ -21,25 +23,10 @@ public class LibraryService {
         sortBooks();
     }
 
-    /**
-     * Adiciona um novo livro à biblioteca
-     * @param titulo Título do livro
-     * @param autor Autor do livro
-     * @return ISBN gerado para o livro
-     * @throws IllegalArgumentException se título ou autor forem vazios
-     */
     public String addBook(String titulo, String autor) {
         return addBook(titulo, autor, null);
     }
 
-    /**
-     * Adiciona um novo livro à biblioteca com ano
-     * @param titulo Título do livro
-     * @param autor Autor do livro
-     * @param ano Ano de publicação (pode ser null)
-     * @return ISBN gerado para o livro
-     * @throws IllegalArgumentException se título ou autor forem vazios
-     */
     public String addBook(String titulo, String autor, Integer ano) {
         if (titulo == null || titulo.trim().isEmpty()) {
             throw new IllegalArgumentException("Título não pode ser vazio");
@@ -61,11 +48,6 @@ public class LibraryService {
         return isbn;
     }
 
-    /**
-     * Remove um livro pelo ISBN
-     * @param isbn ISBN do livro a ser removido
-     * @return true se o livro foi removido, false se não foi encontrado
-     */
     public boolean removeBook(String isbn) {
         if (isbn == null || isbn.trim().isEmpty()) {
             return false;
@@ -73,32 +55,13 @@ public class LibraryService {
 
         boolean removed = books.removeIf(book -> book.getIsbn().equals(isbn.trim()));
 
-        if (removed) {
-            // Não é necessário reordenar após remoção
-        }
-
         return removed;
     }
 
-    /**
-     * Atualiza um livro existente
-     * @param isbn ISBN do livro a ser atualizado
-     * @param novoTitulo Novo título (ou null para manter o atual)
-     * @param novoAutor Novo autor (ou null para manter o atual)
-     * @return true se o livro foi atualizado, false se não foi encontrado
-     */
     public boolean updateBook(String isbn, String novoTitulo, String novoAutor) {
         return updateBook(isbn, novoTitulo, novoAutor, null);
     }
 
-    /**
-     * Atualiza um livro existente com todos os campos
-     * @param isbn ISBN do livro a ser atualizado
-     * @param novoTitulo Novo título (ou null para manter o atual)
-     * @param novoAutor Novo autor (ou null para manter o atual)
-     * @param novoAno Novo ano (ou null para manter o atual, use -1 para remover)
-     * @return true se o livro foi atualizado, false se não foi encontrado
-     */
     public boolean updateBook(String isbn, String novoTitulo, String novoAutor, Integer novoAno) {
         if (isbn == null || isbn.trim().isEmpty()) {
             return false;
@@ -132,18 +95,12 @@ public class LibraryService {
         }
 
         if (updated) {
-            // Reordena a lista após atualização (pois o título pode ter mudado)
             sortBooks();
         }
 
         return updated;
     }
 
-    /**
-     * Busca livros por título usando busca binária
-     * @param titulo Título ou parte do título a ser buscado
-     * @return Lista de livros encontrados
-     */
     public List<Book> searchBooksByTitle(String titulo) {
         if (titulo == null || titulo.trim().isEmpty()) {
             return new ArrayList<>();
@@ -152,26 +109,6 @@ public class LibraryService {
         return BinarySearch.search(books, titulo.trim());
     }
 
-    /**
-     * Busca livros similares ao título fornecido
-     * Usado quando a busca normal não retorna resultados
-     * @param titulo Título a ser buscado
-     * @param maxResults Número máximo de sugestões
-     * @return Lista de livros similares
-     */
-    public List<Book> searchSimilarBooks(String titulo, int maxResults) {
-        if (titulo == null || titulo.trim().isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        return BinarySearch.searchSimilar(books, titulo.trim(), maxResults);
-    }
-
-    /**
-     * Busca um livro pelo ISBN (busca linear, pois ISBN não é usado para ordenação)
-     * @param isbn ISBN do livro
-     * @return O livro encontrado ou null
-     */
     public Book findBookByIsbn(String isbn) {
         if (isbn == null || isbn.trim().isEmpty()) {
             return null;
@@ -186,53 +123,28 @@ public class LibraryService {
         return null;
     }
 
-    /**
-     * Lista todos os livros (ordenados por título)
-     * @return Lista de todos os livros
-     */
     public List<Book> listAllBooks() {
         return new ArrayList<>(books);
     }
 
-    /**
-     * Lista todos os livros ordenados por critério específico
-     * @param sortBy Critério de ordenação (TITULO, AUTOR ou ANO)
-     * @return Lista de todos os livros ordenada
-     */
     public List<Book> listAllBooksSortedBy(MergeSort.SortBy sortBy) {
         List<Book> sortedBooks = new ArrayList<>(books);
         MergeSort.sortBy(sortedBooks, sortBy);
         return sortedBooks;
     }
 
-    /**
-     * Retorna o número total de livros na biblioteca
-     * @return Total de livros
-     */
     public int getTotalBooks() {
         return books.size();
     }
 
-    /**
-     * Verifica se um ISBN já existe na biblioteca
-     * @param isbn ISBN a ser verificado
-     * @return true se o ISBN já existe
-     */
     public boolean isbnExists(String isbn) {
         return findBookByIsbn(isbn) != null;
     }
 
-    /**
-     * Ordena os livros por título usando Merge Sort
-     */
     private void sortBooks() {
         MergeSort.sort(books);
     }
 
-    /**
-     * Gera um ISBN único que não existe na biblioteca
-     * @return ISBN único
-     */
     private String generateUniqueIsbn() {
         String isbn;
 
@@ -262,10 +174,6 @@ public class LibraryService {
         return isbn;
     }
 
-    /**
-     * Retorna estatísticas da biblioteca
-     * @return String com estatísticas formatadas
-     */
     public String getStatistics() {
         StringBuilder stats = new StringBuilder();
         stats.append("=== ESTATÍSTICAS DA BIBLIOTECA ===\n");
@@ -274,8 +182,50 @@ public class LibraryService {
         if (!books.isEmpty()) {
             stats.append("Primeiro livro (alfabeticamente): ").append(books.get(0).getTitulo()).append("\n");
             stats.append("Último livro (alfabeticamente): ").append(books.get(books.size() - 1).getTitulo()).append("\n");
+
+            // Encontra o autor com mais livros
+            AuthorCount topAuthor = getAuthorWithMostBooks();
+            if (topAuthor != null) {
+                stats.append("Autor com mais livros: ").append(topAuthor.author)
+                     .append(" (").append(topAuthor.count).append(" livros)\n");
+            }
         }
 
         return stats.toString();
+    }
+
+    private AuthorCount getAuthorWithMostBooks() {
+        if (books.isEmpty()) {
+            return null;
+        }
+
+        Map<String, Integer> authorCounts = new HashMap<>();
+
+        for (Book book : books) {
+            String author = book.getAutor();
+            authorCounts.put(author, authorCounts.getOrDefault(author, 0) + 1);
+        }
+
+        int maxCount = 0;
+        String topAuthor = null;
+
+        for (Map.Entry<String, Integer> entry : authorCounts.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                topAuthor = entry.getKey();
+            }
+        }
+
+        return new AuthorCount(topAuthor, maxCount);
+    }
+
+    private static class AuthorCount {
+        String author;
+        int count;
+
+        AuthorCount(String author, int count) {
+            this.author = author;
+            this.count = count;
+        }
     }
 }

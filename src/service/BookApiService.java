@@ -1,199 +1,112 @@
 package service;
 
 import model.Book;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class BookApiService {
 
-    private static final String API_BASE_URL = "https://openlibrary.org/search.json";
-    private static final int MAX_BOOKS = 2000;
+    private static final String CSV_FILE_PATH = "base-books.csv";
 
-    /**
-     * Busca livros da Open Library API
-     * 
-     * @return Lista de livros
-     */
-    public static List<Book> fetchBooksInPortuguese() {
+    public static List<Book> loadBooksFromCsv() {
         List<Book> books = new ArrayList<>();
 
-        // Lista de autores pra buscar os livros
-        String[] authors = {
-                "Clarice Lispector",
-                "Freida McFadden",
-                "Gergely Orosz",
-                "Stephen King",
-                "Agatha Christie",
-                "Ernest Hemingway",
-                "Mark Twain",
-                "Jane Austen",
-                "William Shakespeare",
-                "Leo Tolstoy",
-                "Anton Chekhov",
-                "Virginia Woolf",
-                "J.K. Rowling",
-        };
+        System.out.println("Carregando livros do arquivo " + CSV_FILE_PATH + "...");
 
-        System.out.println("Buscando livros...");
+        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_PATH))) {
+            String line;
+            boolean isFirstLine = true;
 
-        for (String author : authors) {
-            if (books.size() >= MAX_BOOKS) {
-                break;
-            }
+            while ((line = br.readLine()) != null) {
+                // Skip header line
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
 
-            try {
-                List<Book> authorBooks = fetchBooksByAuthor(author);
-                for (Book book : authorBooks) {
-                    if (books.size() >= MAX_BOOKS) {
-                        break;
-                    }
+                // Parse CSV line
+                Book book = parseCsvLine(line);
+                if (book != null) {
                     books.add(book);
                 }
-            } catch (Exception e) {
-                System.err.println("Erro ao buscar livros de " + author + ": " + e.getMessage());
             }
-        }
 
-        System.out.println("Total de " + books.size() + " livros carregados.");
-        return books;
-    }
+            System.out.println("Total de " + books.size() + " livros carregados.");
 
-    /**
-     * Busca livros por autor
-     */
-    private static List<Book> fetchBooksByAuthor(String author) throws Exception {
-        List<Book> books = new ArrayList<>();
-
-        String query = URLEncoder.encode(author, StandardCharsets.UTF_8.toString());
-        String urlString = API_BASE_URL + "?author=" + query + "&limit=50";
-
-        String jsonResponse = makeHttpRequest(urlString);
-
-        if (jsonResponse != null) {
-            books = parseJsonResponse(jsonResponse);
+        } catch (IOException e) {
+            System.err.println("Erro ao ler arquivo CSV: " + e.getMessage());
+            System.err.println("Certifique-se que o arquivo " + CSV_FILE_PATH + " existe no diretório do projeto.");
         }
 
         return books;
     }
 
     /**
-     * Faz requisição HTTP GET
+     * Faz parsing de uma linha CSV
+     * Handles both simple comma-separated values and quoted fields
      */
-    private static String makeHttpRequest(String urlString) throws Exception {
-        URL url = new URL(urlString);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Accept", "application/json");
-        conn.setConnectTimeout(5000);
-        conn.setReadTimeout(5000);
-
-        int responseCode = conn.getResponseCode();
-
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            return response.toString();
-        } else {
-            System.err.println("Erro HTTP: " + responseCode);
-            return null;
-        }
-    }
-
-    /**
-     * Faz parsing do JSON usando biblioteca org.json
-     * Extrai os campos necessários: title, author_name e first_publish_year
-     */
-    private static List<Book> parseJsonResponse(String jsonString) {
-        List<Book> books = new ArrayList<>();
-
+    private static Book parseCsvLine(String line) {
         try {
-            JSONObject jsonResponse = new JSONObject(jsonString);
-            JSONArray docs = jsonResponse.optJSONArray("docs");
+            List<String> fields = new ArrayList<>();
+            StringBuilder currentField = new StringBuilder();
+            boolean inQuotes = false;
 
-            if (docs == null) {
-                return books;
-            }
+            for (int i = 0; i < line.length(); i++) {
+                char c = line.charAt(i);
 
-            for (int i = 0; i < docs.length(); i++) {
-                JSONObject bookObj = docs.getJSONObject(i);
-
-                // Extrai título
-                String title = bookObj.optString("title", null);
-                if (title == null || title.isEmpty()) {
-                    continue;
-                }
-
-                // Extrai autor (pega o primeiro do array)
-                JSONArray authorArray = bookObj.optJSONArray("author_name");
-                String author = null;
-                if (authorArray != null && authorArray.length() > 0) {
-                    author = authorArray.getString(0);
-                }
-
-                if (author == null || author.isEmpty()) {
-                    continue;
-                }
-
-                // Extrai ano de publicação
-                Integer year = null;
-                if (bookObj.has("first_publish_year")) {
-                    year = bookObj.optInt("first_publish_year", -1);
-                    if (year == -1) {
-                        year = null;
+                if (c == '"') {
+                    // Check if it's an escaped quote (two consecutive quotes)
+                    if (inQuotes && i + 1 < line.length() && line.charAt(i + 1) == '"') {
+                        currentField.append('"');
+                        i++; // Skip next quote
+                    } else {
+                        inQuotes = !inQuotes;
                     }
+                } else if (c == ',' && !inQuotes) {
+                    // End of field
+                    fields.add(currentField.toString());
+                    currentField = new StringBuilder();
+                } else {
+                    currentField.append(c);
                 }
-
-                // Gera ISBN único (usando UUID)
-                String isbn = generateIsbn();
-                books.add(new Book(title, author, isbn, year));
             }
+            // Add last field
+            fields.add(currentField.toString());
+
+            // Ensure we have at least 4 fields (titulo, autor, isbn, ano)
+            if (fields.size() < 4) {
+                return null;
+            }
+
+            String titulo = fields.get(0).trim();
+            String autor = fields.get(1).trim();
+            String isbn = fields.get(2).trim();
+            String anoStr = fields.get(3).trim();
+
+            // Parse year (can be empty)
+            Integer ano = null;
+            if (!anoStr.isEmpty()) {
+                try {
+                    ano = Integer.parseInt(anoStr);
+                } catch (NumberFormatException e) {
+                    // Keep ano as null if parsing fails
+                }
+            }
+
+            // Validate required fields
+            if (titulo.isEmpty() || autor.isEmpty() || isbn.isEmpty()) {
+                return null;
+            }
+
+            return new Book(titulo, autor, isbn, ano);
 
         } catch (Exception e) {
-            System.err.println("Erro ao fazer parse do JSON: " + e.getMessage());
+            System.err.println("Erro ao fazer parse da linha CSV: " + e.getMessage());
+            return null;
         }
-
-        return books;
-    }
-
-    /**
-     * Gera um ISBN único usando UUID
-     */
-    private static String generateIsbn() {
-        // Gera um ISBN-like baseado em UUID (primeiros 13 caracteres numéricos)
-        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-        StringBuilder isbn = new StringBuilder();
-
-        for (char c : uuid.toCharArray()) {
-            if (Character.isDigit(c)) {
-                isbn.append(c);
-                if (isbn.length() == 13) {
-                    break;
-                }
-            }
-        }
-
-        // Se não conseguiu 13 dígitos, completa com zeros
-        while (isbn.length() < 13) {
-            isbn.append("0");
-        }
-
-        return isbn.toString();
     }
 }

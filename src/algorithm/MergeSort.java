@@ -11,19 +11,10 @@ public class MergeSort {
         ANO
     }
 
-    /**
-     * Ordena uma lista de livros por título usando Merge Sort
-     * @param books Lista de livros a ser ordenada
-     */
     public static void sort(List<Book> books) {
         sortBy(books, SortBy.TITULO);
     }
 
-    /**
-     * Ordena uma lista de livros usando Merge Sort com critério especificado
-     * @param books Lista de livros a ser ordenada
-     * @param sortBy Critério de ordenação (TITULO, AUTOR ou ANO)
-     */
     public static void sortBy(List<Book> books, SortBy sortBy) {
         if (books == null || books.size() <= 1) {
             return;
@@ -32,10 +23,6 @@ public class MergeSort {
         merge(books, 0, books.size() - 1, sortBy);
     }
 
-    /**
-     * Método recursivo do Merge Sort
-     * Baseado na implementação do professor (adaptado para List<Book>)
-     */
     public static void merge(List<Book> books, int start, int end, SortBy sortBy) {
         int middle;
         if (start < end) {
@@ -46,10 +33,6 @@ public class MergeSort {
         }
     }
 
-    /**
-     * Intercala dois subvetores ordenados
-     * Baseado na implementação do professor (adaptado para List<Book>)
-     */
     public static void intercalate(List<Book> books, int start, int end, int middle, SortBy sortBy) {
         int freePos, startVector1, startVector2, i;
         Book aux[] = new Book[books.size()];
@@ -58,7 +41,6 @@ public class MergeSort {
         startVector2 = middle + 1;
         freePos = start;
 
-        // Intercala os dois vetores enquanto ambos têm elementos
         while (startVector1 <= middle && startVector2 <= end) {
             if (compareBooks(books.get(startVector1), books.get(startVector2), sortBy) <= 0) {
                 aux[freePos] = books.get(startVector1);
@@ -70,27 +52,21 @@ public class MergeSort {
             freePos = freePos + 1;
         }
 
-        // Se ainda existem livros no primeiro vetor que não foram intercalados
         for (i = startVector1; i <= middle; i++) {
             aux[freePos] = books.get(i);
             freePos = freePos + 1;
         }
 
-        // Se ainda existem livros no segundo vetor que não foram intercalados
         for (i = startVector2; i <= end; i++) {
             aux[freePos] = books.get(i);
             freePos = freePos + 1;
         }
 
-        // Retorna os valores do vetor aux para o vetor books
         for (i = start; i <= end; i++) {
             books.set(i, aux[i]);
         }
     }
 
-    /**
-     * Compara dois livros baseado no critério especificado
-     */
     private static int compareBooks(Book book1, Book book2, SortBy sortBy) {
         switch (sortBy) {
             case TITULO:
@@ -104,9 +80,6 @@ public class MergeSort {
         }
     }
 
-    /**
-     * Compara dois títulos de forma case-insensitive
-     */
     private static int compareTitles(String title1, String title2) {
         if (title1 == null && title2 == null) return 0;
         if (title1 == null) return -1;
@@ -115,9 +88,6 @@ public class MergeSort {
         return title1.toLowerCase().compareTo(title2.toLowerCase());
     }
 
-    /**
-     * Compara dois autores de forma case-insensitive
-     */
     private static int compareAuthors(String author1, String author2) {
         if (author1 == null && author2 == null) return 0;
         if (author1 == null) return -1;
@@ -126,9 +96,6 @@ public class MergeSort {
         return author1.toLowerCase().compareTo(author2.toLowerCase());
     }
 
-    /**
-     * Compara dois anos (null vai para o final)
-     */
     private static int compareYears(Integer year1, Integer year2) {
         if (year1 == null && year2 == null) return 0;
         if (year1 == null) return 1;

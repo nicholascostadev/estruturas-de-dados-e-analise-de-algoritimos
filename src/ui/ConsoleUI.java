@@ -23,9 +23,9 @@ public class ConsoleUI {
     public void start() {
         boolean running = true;
 
-        System.out.println("\n╔════════════════════════════════════════════╗");
-        System.out.println("║   SISTEMA DE GERENCIAMENTO DE BIBLIOTECA  ║");
-        System.out.println("╚════════════════════════════════════════════╝");
+        System.out.println("\n╔════════════════════════════╗");
+        System.out.println("║   SISTEMA DE BIBLIOTECA    ║");
+        System.out.println("╚════════════════════════════╝");
 
         while (running) {
             displayMenu();
@@ -211,26 +211,12 @@ public class ConsoleUI {
         System.out.println("          BUSCAR LIVRO POR TÍTULO");
         System.out.println("─".repeat(50));
 
-        String titulo = getStringInput("Digite o título ou parte do título: ");
+        String titulo = getStringInput("Digite o título exato do livro: ");
 
         List<Book> results = libraryService.searchBooksByTitle(titulo);
 
         if (results.isEmpty()) {
-            System.out.println("\n❌ Nenhum livro encontrado com esse título.");
-
-            // Busca livros similares para sugerir
-            System.out.println("\n🔍 Buscando livros similares...");
-            List<Book> similarBooks = libraryService.searchSimilarBooks(titulo, 5);
-
-            if (!similarBooks.isEmpty()) {
-                System.out.println("\n💡 Você quis dizer algum destes?");
-                System.out.println("─".repeat(50));
-                for (int i = 0; i < similarBooks.size(); i++) {
-                    System.out.println((i + 1) + ". " + similarBooks.get(i));
-                }
-            } else {
-                System.out.println("\n😔 Nenhum livro similar foi encontrado.");
-            }
+            System.out.println("\n❌ Nenhum livro encontrado.");
         } else {
             System.out.println("\n✅ " + results.size() + " livro(s) encontrado(s):");
             System.out.println("─".repeat(50));

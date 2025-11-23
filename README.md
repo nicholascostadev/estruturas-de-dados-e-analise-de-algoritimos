@@ -29,12 +29,12 @@ Este projeto é um sistema de gerenciamento de biblioteca que permite realizar o
    - Usado para buscar livros por título de forma eficiente
    - Não utiliza `Arrays.binarySearch()`
 
-### Integração com API
+### Base de Dados Inicial
 
-- Carrega livros iniciais da **Open Library API**
-- Busca autores brasileiros e portugueses famosos
-- Gera ISBN único para cada livro (usando UUID)
-- Funciona mesmo se a API estiver indisponível
+- Carrega livros iniciais de um arquivo CSV local (`base-books.csv`)
+- Contém ~600 livros de autores famosos
+- ISBN único para cada livro (gerado com UUID)
+- Dados pré-populados para uso imediato
 
 ## 📁 Estrutura do Projeto
 
@@ -46,13 +46,14 @@ library-management-system/
 │   │   └── Book.java               # Modelo de dados do livro
 │   ├── service/
 │   │   ├── LibraryService.java     # Lógica de negócio (CRUD)
-│   │   └── BookApiService.java     # Integração com API
+│   │   └── BookApiService.java     # Carregador de CSV
 │   ├── algorithm/
 │   │   ├── MergeSort.java          # Algoritmo de ordenação
 │   │   └── BinarySearch.java       # Algoritmo de busca
 │   └── ui/
 │       └── ConsoleUI.java          # Interface do usuário
 ├── bin/                             # Classes compiladas
+├── base-books.csv                   # Base de dados inicial
 ├── run.sh                           # Script de execução
 └── README.md                        # Documentação
 ```
@@ -79,11 +80,10 @@ java -cp bin Main
 ### Requisitos
 
 - Java JDK 8 ou superior
-- Conexão com internet (para carregar livros iniciais)
 
 ## 💡 Como Usar
 
-1. **Ao iniciar**: O sistema carrega ~30 livros de autores brasileiros/portugueses da API
+1. **Ao iniciar**: O sistema carrega ~600 livros do arquivo CSV local
 2. **Menu Principal**: Escolha uma opção digitando o número (1-7)
 3. **ISBN**: Ao adicionar um livro, um ISBN será gerado - salve-o para operações futuras
 4. **Busca**: A busca é feita por título (pode ser parcial)
@@ -143,21 +143,30 @@ Este projeto foi desenvolvido para a disciplina de **Estruturas de Dados e Anál
 - Boas práticas de programação Java
 - Arquitetura em camadas (Model-Service-UI)
 
-## 📝 Autores Buscados na API
+## 📝 Autores Incluídos na Base Inicial
 
-- Machado de Assis
+A base de dados `base-books.csv` contém livros de diversos autores famosos:
+
 - Clarice Lispector
-- Paulo Coelho
-- Jorge Amado
-- Carlos Drummond de Andrade
-- Cecília Meireles
-- José Saramago
-- Fernando Pessoa
+- Freida McFadden
+- Gergely Orosz
+- Stephen King
+- Agatha Christie
+- Ernest Hemingway
+- Mark Twain
+- Jane Austen
+- William Shakespeare
+- Leo Tolstoy
+- Anton Chekhov
+- Virginia Woolf
+- J.K. Rowling
 
-## 🌐 API Utilizada
+## 📦 Formato do Arquivo CSV
 
-**Open Library API**: https://openlibrary.org/developers/api
+O arquivo `base-books.csv` contém as seguintes colunas:
+- **titulo**: Título do livro
+- **autor**: Nome do autor
+- **isbn**: ISBN único de 13 dígitos
+- **ano**: Ano de publicação (opcional)
 
-- Sem necessidade de chave de API
-- Acesso gratuito
-- Mais de 20 milhões de livros catalogados
+Os dados foram obtidos da **Open Library API** (https://openlibrary.org/developers/api)
