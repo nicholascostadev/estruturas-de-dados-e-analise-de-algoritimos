@@ -3,6 +3,7 @@ package algorithm;
 import model.Book;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.Normalizer;
 
 public class BinarySearch {
 
@@ -13,15 +14,15 @@ public class BinarySearch {
             return results;
         }
 
-        String searchLower = searchTitle.toLowerCase().trim();
+        String searchNormalized = normalize(searchTitle.trim());
 
-        int insertionPoint = binarySearchInsertionPoint(books, searchLower);
+        int insertionPoint = binarySearchInsertionPoint(books, searchNormalized);
         boolean isExactMatch = insertionPoint < books.size() &&
-            books.get(insertionPoint).getTitulo().toLowerCase().equals(searchLower);
+            normalize(books.get(insertionPoint).getTitulo()).equals(searchNormalized);
 
         if (isExactMatch) {
             int left = insertionPoint;
-            while (left >= 0 && books.get(left).getTitulo().toLowerCase().equals(searchLower)) {
+            while (left >= 0 && normalize(books.get(left).getTitulo()).equals(searchNormalized)) {
                 results.add(0, books.get(left));
                 left--;
             }
@@ -31,12 +32,12 @@ public class BinarySearch {
             }
 
             int right = insertionPoint + 1;
-            while (right < books.size() && books.get(right).getTitulo().toLowerCase().equals(searchLower)) {
+            while (right < books.size() && normalize(books.get(right).getTitulo()).equals(searchNormalized)) {
                 results.add(books.get(right));
                 right++;
             }
         } else {
-            // No exact match - return closest books
+            // Não encontrou match exato - retorna livros próximos
             int start = Math.max(0, insertionPoint - 5);
             int end = Math.min(books.size(), insertionPoint + 5);
 
@@ -48,14 +49,25 @@ public class BinarySearch {
         return results;
     }
 
-    private static int binarySearchInsertionPoint(List<Book> books, String searchLower) {
+    private static String normalize(String text) {
+        if (text == null) {
+            return "";
+        }
+        String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
+
+        normalized = normalized.replaceAll("\\p{M}", "");
+        
+        return normalized.toLowerCase();
+    }
+
+    private static int binarySearchInsertionPoint(List<Book> books, String searchNormalized) {
         int left = 0;
         int right = books.size() - 1;
 
         while (left <= right) {
             int middle = left + (right - left) / 2;
-            String bookTitle = books.get(middle).getTitulo().toLowerCase();
-            int comparison = bookTitle.compareTo(searchLower);
+            String bookTitle = normalize(books.get(middle).getTitulo());
+            int comparison = bookTitle.compareTo(searchNormalized);
 
             if (comparison == 0) {
                 return middle;
