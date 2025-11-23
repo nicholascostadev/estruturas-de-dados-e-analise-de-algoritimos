@@ -32,7 +32,10 @@ Este projeto é um sistema de gerenciamento de biblioteca que permite realizar o
 ### Base de Dados Inicial
 
 - Carrega livros iniciais de um arquivo CSV local (`base-books.csv`)
-- Contém ~600 livros de autores famosos
+- Contém ~458 livros de autores famosos internacionais
+- **165 livros com títulos em português** (quando disponível)
+- **293 livros em inglês** (sem tradução portuguesa disponível)
+- Prioriza edições em português brasileiro (pt-BR)
 - ISBN único para cada livro (gerado com UUID)
 - Dados pré-populados para uso imediato
 
@@ -83,10 +86,10 @@ java -cp bin Main
 
 ## 💡 Como Usar
 
-1. **Ao iniciar**: O sistema carrega ~600 livros do arquivo CSV local
+1. **Ao iniciar**: O sistema carrega ~458 livros do arquivo CSV local (165 em português, 293 em inglês)
 2. **Menu Principal**: Escolha uma opção digitando o número (1-7)
 3. **ISBN**: Ao adicionar um livro, um ISBN será gerado - salve-o para operações futuras
-4. **Busca**: A busca é feita por título (pode ser parcial)
+4. **Busca**: A busca é feita por título em português ou inglês
 5. **Ordenação**: Os livros são mantidos sempre ordenados alfabeticamente
 
 ## 📚 Exemplo de Uso
@@ -147,26 +150,31 @@ Este projeto foi desenvolvido para a disciplina de **Estruturas de Dados e Anál
 
 A base de dados `base-books.csv` contém livros de diversos autores famosos:
 
-- Clarice Lispector
-- Freida McFadden
-- Gergely Orosz
-- Stephen King
-- Agatha Christie
-- Ernest Hemingway
-- Mark Twain
-- Jane Austen
-- William Shakespeare
-- Leo Tolstoy
-- Anton Chekhov
-- Virginia Woolf
 - J.K. Rowling
+- Agatha Christie
+- Stephen King
+- George R.R. Martin
+- J.R.R. Tolkien
+- Dan Brown
+- Nicholas Sparks
+- Gabriel García Márquez
+- Neil Gaiman
+- Arthur Conan Doyle
+- Suzanne Collins
 
 ## 📦 Formato do Arquivo CSV
 
 O arquivo `base-books.csv` contém as seguintes colunas:
-- **titulo**: Título do livro
+- **titulo**: Título do livro (em português quando disponível, inglês caso contrário)
 - **autor**: Nome do autor
 - **isbn**: ISBN único de 13 dígitos
 - **ano**: Ano de publicação (opcional)
+
+### Títulos em Português
+
+O sistema busca automaticamente por edições em **português brasileiro** (pt-BR) usando a Open Library API. Quando uma edição portuguesa não está disponível, mantém-se o título original em inglês. Exemplos de títulos em português:
+- "A Torre Negra" (Stephen King)
+- "O Senhor dos Anéis" (J.R.R. Tolkien)
+- "Morte no Nilo" (Agatha Christie)
 
 Os dados foram obtidos da **Open Library API** (https://openlibrary.org/developers/api)
