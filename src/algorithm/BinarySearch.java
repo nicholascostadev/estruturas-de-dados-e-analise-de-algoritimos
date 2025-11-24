@@ -37,7 +37,6 @@ public class BinarySearch {
                 right++;
             }
         } else {
-            // Não encontrou match exato - retorna livros próximos
             int start = Math.max(0, insertionPoint - 5);
             int end = Math.min(books.size(), insertionPoint + 5);
 

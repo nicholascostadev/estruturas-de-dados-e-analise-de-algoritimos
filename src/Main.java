@@ -17,10 +17,7 @@ public class Main {
             System.out.println(initialBooks.size() + " livros carregados com sucesso!");
         }
 
-        // Inicializa o serviço de biblioteca
         LibraryService libraryService = new LibraryService(initialBooks);
-
-        // Inicia a interface do usuário
         ConsoleUI consoleUI = new ConsoleUI(libraryService);
         consoleUI.start();
     }

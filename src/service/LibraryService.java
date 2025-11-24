@@ -36,13 +36,10 @@ public class LibraryService {
             throw new IllegalArgumentException("Autor não pode ser vazio");
         }
 
-        // Gera ISBN único
         String isbn = generateUniqueIsbn();
-
         Book newBook = new Book(titulo.trim(), autor.trim(), isbn, ano);
         books.add(newBook);
 
-        // Reordena a lista
         sortBooks();
 
         return isbn;
@@ -87,7 +84,7 @@ public class LibraryService {
 
         if (novoAno != null) {
             if (novoAno == -1) {
-                book.setAno(null); // Remove o ano
+                book.setAno(null);
             } else {
                 book.setAno(novoAno);
             }
@@ -149,7 +146,6 @@ public class LibraryService {
         String isbn;
 
         do {
-            // Gera um ISBN-like baseado em UUID (primeiros 13 caracteres numéricos)
             String uuid = UUID.randomUUID().toString().replaceAll("-", "");
             StringBuilder isbnBuilder = new StringBuilder();
 
@@ -162,14 +158,13 @@ public class LibraryService {
                 }
             }
 
-            // Se não conseguiu 13 dígitos, completa com números aleatórios
             while (isbnBuilder.length() < 13) {
                 isbnBuilder.append((int) (Math.random() * 10));
             }
 
             isbn = isbnBuilder.toString();
 
-        } while (isbnExists(isbn)); // Garante que o ISBN é único
+        } while (isbnExists(isbn));
 
         return isbn;
     }
@@ -183,7 +178,6 @@ public class LibraryService {
             stats.append("Primeiro livro (alfabeticamente): ").append(books.get(0).getTitulo()).append("\n");
             stats.append("Último livro (alfabeticamente): ").append(books.get(books.size() - 1).getTitulo()).append("\n");
 
-            // Encontra o autor com mais livros
             AuthorCount topAuthor = getAuthorWithMostBooks();
             if (topAuthor != null) {
                 stats.append("Autor com mais livros: ").append(topAuthor.author)

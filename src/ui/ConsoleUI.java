@@ -17,9 +17,6 @@ public class ConsoleUI {
         this.scanner = new Scanner(System.in);
     }
 
-    /**
-     * Inicia o loop principal da interface
-     */
     public void start() {
         boolean running = true;
 
@@ -66,9 +63,6 @@ public class ConsoleUI {
         scanner.close();
     }
 
-    /**
-     * Exibe o menu principal
-     */
     private void displayMenu() {
         System.out.println("\n" + "=".repeat(50));
         System.out.println("                    MENU PRINCIPAL");
@@ -83,9 +77,6 @@ public class ConsoleUI {
         System.out.println("=".repeat(50));
     }
 
-    /**
-     * Adiciona um novo livro
-     */
     private void addBook() {
         System.out.println("\n" + "─".repeat(50));
         System.out.println("           ADICIONAR NOVO LIVRO");
@@ -118,9 +109,6 @@ public class ConsoleUI {
         }
     }
 
-    /**
-     * Remove um livro
-     */
     private void removeBook() {
         System.out.println("\n" + "─".repeat(50));
         System.out.println("              REMOVER LIVRO");
@@ -128,7 +116,6 @@ public class ConsoleUI {
 
         String isbn = getStringInput("Digite o ISBN do livro a ser removido: ");
 
-        // Mostra o livro antes de remover
         Book book = libraryService.findBookByIsbn(isbn);
         if (book != null) {
             System.out.println("\nLivro encontrado:");
@@ -151,9 +138,6 @@ public class ConsoleUI {
         }
     }
 
-    /**
-     * Atualiza um livro existente
-     */
     private void updateBook() {
         System.out.println("\n" + "─".repeat(50));
         System.out.println("             ATUALIZAR LIVRO");
@@ -203,9 +187,6 @@ public class ConsoleUI {
         }
     }
 
-    /**
-     * Busca livros por título
-     */
     private void searchBook() {
         System.out.println("\n" + "─".repeat(50));
         System.out.println("          BUSCAR LIVRO POR TÍTULO");
@@ -226,9 +207,6 @@ public class ConsoleUI {
         }
     }
 
-    /**
-     * Lista todos os livros
-     */
     private void listAllBooks() {
         System.out.println("\n" + "─".repeat(50));
         System.out.println("          TODOS OS LIVROS DA BIBLIOTECA");
@@ -239,7 +217,6 @@ public class ConsoleUI {
             return;
         }
 
-        // Submenu de ordenação
         System.out.println("\nComo deseja ordenar a listagem?");
         System.out.println("  1. Por Título (A-Z)");
         System.out.println("  2. Por Autor (A-Z)");
@@ -250,7 +227,6 @@ public class ConsoleUI {
         MergeSort.SortBy sortBy;
         String sortLabel;
 
-        // Valida a opção até que seja válida
         while (true) {
             sortChoice = getIntInput("Escolha uma opção (1-3): ");
 
@@ -290,26 +266,17 @@ public class ConsoleUI {
         }
     }
 
-    /**
-     * Mostra estatísticas da biblioteca
-     */
     private void showStatistics() {
         System.out.println("\n" + "─".repeat(50));
         System.out.println(libraryService.getStatistics());
         System.out.println("─".repeat(50));
     }
 
-    /**
-     * Obtém entrada de string do usuário
-     */
     private String getStringInput(String prompt) {
         System.out.print(prompt);
         return scanner.nextLine().trim();
     }
 
-    /**
-     * Obtém entrada de inteiro do usuário
-     */
     private int getIntInput(String prompt) {
         while (true) {
             try {
@@ -322,9 +289,6 @@ public class ConsoleUI {
         }
     }
 
-    /**
-     * Aguarda o usuário pressionar Enter
-     */
     private void waitForEnter() {
         System.out.print("\nPressione ENTER para continuar...");
         scanner.nextLine();

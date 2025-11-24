@@ -22,7 +22,6 @@ public class Book {
         this.ano = ano;
     }
 
-    // Getters
     public String getTitulo() {
         return titulo;
     }
@@ -39,7 +38,6 @@ public class Book {
         return ano;
     }
 
-    // Setters
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }

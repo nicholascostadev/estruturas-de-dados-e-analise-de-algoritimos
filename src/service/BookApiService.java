@@ -22,13 +22,11 @@ public class BookApiService {
             boolean isFirstLine = true;
 
             while ((line = br.readLine()) != null) {
-                // Skip header line
                 if (isFirstLine) {
                     isFirstLine = false;
                     continue;
                 }
 
-                // Parse CSV line
                 Book book = parseCsvLine(line);
                 if (book != null) {
                     books.add(book);
@@ -45,10 +43,6 @@ public class BookApiService {
         return books;
     }
 
-    /**
-     * Faz parsing de uma linha CSV
-     * Handles both simple comma-separated values and quoted fields
-     */
     private static Book parseCsvLine(String line) {
         try {
             List<String> fields = new ArrayList<>();
@@ -59,25 +53,21 @@ public class BookApiService {
                 char c = line.charAt(i);
 
                 if (c == '"') {
-                    // Check if it's an escaped quote (two consecutive quotes)
                     if (inQuotes && i + 1 < line.length() && line.charAt(i + 1) == '"') {
                         currentField.append('"');
-                        i++; // Skip next quote
+                        i++;
                     } else {
                         inQuotes = !inQuotes;
                     }
                 } else if (c == ',' && !inQuotes) {
-                    // End of field
                     fields.add(currentField.toString());
                     currentField = new StringBuilder();
                 } else {
                     currentField.append(c);
                 }
             }
-            // Add last field
             fields.add(currentField.toString());
 
-            // Ensure we have at least 4 fields (titulo, autor, isbn, ano)
             if (fields.size() < 4) {
                 return null;
             }
@@ -87,17 +77,14 @@ public class BookApiService {
             String isbn = fields.get(2).trim();
             String anoStr = fields.get(3).trim();
 
-            // Parse year (can be empty)
             Integer ano = null;
             if (!anoStr.isEmpty()) {
                 try {
                     ano = Integer.parseInt(anoStr);
                 } catch (NumberFormatException e) {
-                    // Keep ano as null if parsing fails
                 }
             }
 
-            // Validate required fields
             if (titulo.isEmpty() || autor.isEmpty() || isbn.isEmpty()) {
                 return null;
             }
