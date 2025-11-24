@@ -4,6 +4,7 @@ import algorithm.MergeSort;
 import model.Book;
 import service.LibraryService;
 
+import java.time.Year;
 import java.util.List;
 import java.util.Scanner;
 
@@ -84,20 +85,7 @@ public class ConsoleUI {
 
         String title = getStringInput("Digite o título do livro: ");
         String author = getStringInput("Digite o autor do livro: ");
-        String yearStr = getStringInput("Digite o ano de publicação (ou deixe em branco): ");
-
-        Integer year = null;
-        if (!yearStr.isEmpty()) {
-            try {
-                year = Integer.parseInt(yearStr);
-                if (year < 0 || year > 2100) {
-                    System.out.println("\n⚠️  Ano inválido! Livro será adicionado sem ano.");
-                    year = null;
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("\n⚠️  Ano inválido! Livro será adicionado sem ano.");
-            }
-        }
+        Integer year = getYearInput("Digite o ano de publicação (ou deixe em branco): ", false);
 
         try {
             String isbn = libraryService.addBook(title, author, year);
@@ -153,34 +141,25 @@ public class ConsoleUI {
 
             String newTitle = getStringInput("Novo título: ");
             String newAuthor = getStringInput("Novo autor: ");
-            String yearStr = getStringInput("Novo ano (ou -1 para remover o ano): ");
-
-            Integer newYear = null;
-            if (!yearStr.isEmpty()) {
-                try {
-                    newYear = Integer.parseInt(yearStr);
-                    if (newYear != -1 && (newYear < 0 || newYear > 2100)) {
-                        System.out.println("\n⚠️  Ano inválido! O ano não será alterado.");
-                        newYear = null;
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("\n⚠️  Ano inválido! O ano não será alterado.");
-                }
-            }
+            Integer newYear = getYearInput("Novo ano (ou -1 para remover o ano): ", true);
 
             if (newTitle.isEmpty() && newAuthor.isEmpty() && newYear == null) {
                 System.out.println("\n↩️  Nenhuma alteração foi feita.");
                 return;
             }
 
-            boolean updated = libraryService.updateBook(isbn, newTitle, newAuthor, newYear);
+            try {
+                boolean updated = libraryService.updateBook(isbn, newTitle, newAuthor, newYear);
 
-            if (updated) {
-                System.out.println("\n✅ Livro atualizado com sucesso!");
-                Book updatedBook = libraryService.findBookByIsbn(isbn);
-                System.out.println("  " + updatedBook);
-            } else {
-                System.out.println("\n❌ Erro ao atualizar o livro.");
+                if (updated) {
+                    System.out.println("\n✅ Livro atualizado com sucesso!");
+                    Book updatedBook = libraryService.findBookByIsbn(isbn);
+                    System.out.println("  " + updatedBook);
+                } else {
+                    System.out.println("\n❌ Erro ao atualizar o livro.");
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("\n❌ Erro: " + e.getMessage());
             }
         } else {
             System.out.println("\n❌ Livro não encontrado com o ISBN informado.");
@@ -292,5 +271,42 @@ public class ConsoleUI {
     private void waitForEnter() {
         System.out.print("\nPressione ENTER para continuar...");
         scanner.nextLine();
+    }
+
+    private Integer getYearInput(String prompt, boolean allowRemove) {
+        int currentYear = Year.now().getValue();
+
+        while (true) {
+            String input = getStringInput(prompt);
+
+            if (input.isEmpty()) {
+                return null;
+            }
+
+            try {
+                int year = Integer.parseInt(input);
+
+                if (allowRemove && year == -1) {
+                    return -1;
+                }
+
+                if (year < 0 || year > currentYear) {
+                    if (allowRemove) {
+                        System.out.println("❌ Ano inválido! Digite um ano entre 0 e " + currentYear + ", ou -1 para remover. Tente novamente ou deixe em branco.");
+                    } else {
+                        System.out.println("❌ Ano inválido! O ano deve estar entre 0 e " + currentYear + ". Tente novamente ou deixe em branco.");
+                    }
+                    continue;
+                }
+
+                return year;
+            } catch (NumberFormatException e) {
+                if (allowRemove) {
+                    System.out.println("❌ Por favor, digite um número válido, -1 para remover, ou deixe em branco.");
+                } else {
+                    System.out.println("❌ Por favor, digite um número válido ou deixe em branco.");
+                }
+            }
+        }
     }
 }

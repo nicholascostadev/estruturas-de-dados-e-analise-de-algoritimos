@@ -4,6 +4,7 @@ import algorithm.BinarySearch;
 import algorithm.MergeSort;
 import model.Book;
 
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,10 @@ public class LibraryService {
 
         if (author == null || author.trim().isEmpty()) {
             throw new IllegalArgumentException("Autor não pode ser vazio");
+        }
+
+        if (year != null && (year < 0 || year > Year.now().getValue())) {
+            throw new IllegalArgumentException("Ano inválido. Deve estar entre 0 e " + Year.now().getValue());
         }
 
         String isbn = generateUniqueIsbn();
@@ -86,6 +91,9 @@ public class LibraryService {
             if (newYear == -1) {
                 book.setYear(null);
             } else {
+                if (newYear < 0 || newYear > Year.now().getValue()) {
+                    throw new IllegalArgumentException("Ano inválido. Deve estar entre 0 e " + Year.now().getValue());
+                }
                 book.setYear(newYear);
             }
             updated = true;
