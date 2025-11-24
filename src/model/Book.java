@@ -3,61 +3,61 @@ package model;
 import java.util.Objects;
 
 public class Book {
-    private String titulo;
-    private String autor;
+    private String title;
+    private String author;
     private String isbn;
-    private Integer ano;
+    private Integer year;
 
-    public Book(String titulo, String autor, String isbn) {
-        this.titulo = titulo;
-        this.autor = autor;
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
         this.isbn = isbn;
-        this.ano = null;
+        this.year = null;
     }
 
-    public Book(String titulo, String autor, String isbn, Integer ano) {
-        this.titulo = titulo;
-        this.autor = autor;
+    public Book(String title, String author, String isbn, Integer year) {
+        this.title = title;
+        this.author = author;
         this.isbn = isbn;
-        this.ano = ano;
+        this.year = year;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getTitle() {
+        return title;
     }
 
-    public String getAutor() {
-        return autor;
+    public String getAuthor() {
+        return author;
     }
 
     public String getIsbn() {
         return isbn;
     }
 
-    public Integer getAno() {
-        return ano;
+    public Integer getYear() {
+        return year;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
-    public void setAno(Integer ano) {
-        this.ano = ano;
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
     @Override
     public String toString() {
-        String anoStr = (ano != null) ? " | Ano: " + ano : "";
-        return String.format("ISBN: %s | Título: %s | Autor: %s%s", isbn, titulo, autor, anoStr);
+        String yearStr = (year != null) ? " | Ano: " + year : "";
+        return String.format("ISBN: %s | Título: %s | Autor: %s%s", isbn, title, author, yearStr);
     }
 
     @Override

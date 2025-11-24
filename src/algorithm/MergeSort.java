@@ -6,13 +6,13 @@ import java.util.List;
 public class MergeSort {
 
     public enum SortBy {
-        TITULO,
-        AUTOR,
-        ANO
+        TITLE,
+        AUTHOR,
+        YEAR
     }
 
     public static void sort(List<Book> books) {
-        sortBy(books, SortBy.TITULO);
+        sortBy(books, SortBy.TITLE);
     }
 
     public static void sortBy(List<Book> books, SortBy sortBy) {
@@ -69,14 +69,14 @@ public class MergeSort {
 
     private static int compareBooks(Book book1, Book book2, SortBy sortBy) {
         switch (sortBy) {
-            case TITULO:
-                return compareTitles(book1.getTitulo(), book2.getTitulo());
-            case AUTOR:
-                return compareAuthors(book1.getAutor(), book2.getAutor());
-            case ANO:
-                return compareYears(book1.getAno(), book2.getAno());
+            case TITLE:
+                return compareTitles(book1.getTitle(), book2.getTitle());
+            case AUTHOR:
+                return compareAuthors(book1.getAuthor(), book2.getAuthor());
+            case YEAR:
+                return compareYears(book1.getYear(), book2.getYear());
             default:
-                return compareTitles(book1.getTitulo(), book2.getTitulo());
+                return compareTitles(book1.getTitle(), book2.getTitle());
         }
     }
 

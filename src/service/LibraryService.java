@@ -23,21 +23,21 @@ public class LibraryService {
         sortBooks();
     }
 
-    public String addBook(String titulo, String autor) {
-        return addBook(titulo, autor, null);
+    public String addBook(String title, String author) {
+        return addBook(title, author, null);
     }
 
-    public String addBook(String titulo, String autor, Integer ano) {
-        if (titulo == null || titulo.trim().isEmpty()) {
+    public String addBook(String title, String author, Integer year) {
+        if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("Título não pode ser vazio");
         }
 
-        if (autor == null || autor.trim().isEmpty()) {
+        if (author == null || author.trim().isEmpty()) {
             throw new IllegalArgumentException("Autor não pode ser vazio");
         }
 
         String isbn = generateUniqueIsbn();
-        Book newBook = new Book(titulo.trim(), autor.trim(), isbn, ano);
+        Book newBook = new Book(title.trim(), author.trim(), isbn, year);
         books.add(newBook);
 
         sortBooks();
@@ -55,11 +55,11 @@ public class LibraryService {
         return removed;
     }
 
-    public boolean updateBook(String isbn, String novoTitulo, String novoAutor) {
-        return updateBook(isbn, novoTitulo, novoAutor, null);
+    public boolean updateBook(String isbn, String newTitle, String newAuthor) {
+        return updateBook(isbn, newTitle, newAuthor, null);
     }
 
-    public boolean updateBook(String isbn, String novoTitulo, String novoAutor, Integer novoAno) {
+    public boolean updateBook(String isbn, String newTitle, String newAuthor, Integer newYear) {
         if (isbn == null || isbn.trim().isEmpty()) {
             return false;
         }
@@ -72,21 +72,21 @@ public class LibraryService {
 
         boolean updated = false;
 
-        if (novoTitulo != null && !novoTitulo.trim().isEmpty()) {
-            book.setTitulo(novoTitulo.trim());
+        if (newTitle != null && !newTitle.trim().isEmpty()) {
+            book.setTitle(newTitle.trim());
             updated = true;
         }
 
-        if (novoAutor != null && !novoAutor.trim().isEmpty()) {
-            book.setAutor(novoAutor.trim());
+        if (newAuthor != null && !newAuthor.trim().isEmpty()) {
+            book.setAuthor(newAuthor.trim());
             updated = true;
         }
 
-        if (novoAno != null) {
-            if (novoAno == -1) {
-                book.setAno(null);
+        if (newYear != null) {
+            if (newYear == -1) {
+                book.setYear(null);
             } else {
-                book.setAno(novoAno);
+                book.setYear(newYear);
             }
             updated = true;
         }
@@ -98,12 +98,12 @@ public class LibraryService {
         return updated;
     }
 
-    public List<Book> searchBooksByTitle(String titulo) {
-        if (titulo == null || titulo.trim().isEmpty()) {
+    public List<Book> searchBooksByTitle(String title) {
+        if (title == null || title.trim().isEmpty()) {
             return new ArrayList<>();
         }
 
-        return BinarySearch.search(books, titulo.trim());
+        return BinarySearch.search(books, title.trim());
     }
 
     public Book findBookByIsbn(String isbn) {
@@ -175,8 +175,8 @@ public class LibraryService {
         stats.append("Total de livros: ").append(getTotalBooks()).append("\n");
 
         if (!books.isEmpty()) {
-            stats.append("Primeiro livro (alfabeticamente): ").append(books.get(0).getTitulo()).append("\n");
-            stats.append("Último livro (alfabeticamente): ").append(books.get(books.size() - 1).getTitulo()).append("\n");
+            stats.append("Primeiro livro (alfabeticamente): ").append(books.get(0).getTitle()).append("\n");
+            stats.append("Último livro (alfabeticamente): ").append(books.get(books.size() - 1).getTitle()).append("\n");
 
             AuthorCount topAuthor = getAuthorWithMostBooks();
             if (topAuthor != null) {
@@ -196,7 +196,7 @@ public class LibraryService {
         Map<String, Integer> authorCounts = new HashMap<>();
 
         for (Book book : books) {
-            String author = book.getAutor();
+            String author = book.getAuthor();
             authorCounts.put(author, authorCounts.getOrDefault(author, 0) + 1);
         }
 

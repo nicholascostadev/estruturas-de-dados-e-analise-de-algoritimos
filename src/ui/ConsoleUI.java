@@ -82,17 +82,17 @@ public class ConsoleUI {
         System.out.println("           ADICIONAR NOVO LIVRO");
         System.out.println("─".repeat(50));
 
-        String titulo = getStringInput("Digite o título do livro: ");
-        String autor = getStringInput("Digite o autor do livro: ");
-        String anoStr = getStringInput("Digite o ano de publicação (ou deixe em branco): ");
+        String title = getStringInput("Digite o título do livro: ");
+        String author = getStringInput("Digite o autor do livro: ");
+        String yearStr = getStringInput("Digite o ano de publicação (ou deixe em branco): ");
 
-        Integer ano = null;
-        if (!anoStr.isEmpty()) {
+        Integer year = null;
+        if (!yearStr.isEmpty()) {
             try {
-                ano = Integer.parseInt(anoStr);
-                if (ano < 0 || ano > 2100) {
+                year = Integer.parseInt(yearStr);
+                if (year < 0 || year > 2100) {
                     System.out.println("\n⚠️  Ano inválido! Livro será adicionado sem ano.");
-                    ano = null;
+                    year = null;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("\n⚠️  Ano inválido! Livro será adicionado sem ano.");
@@ -100,7 +100,7 @@ public class ConsoleUI {
         }
 
         try {
-            String isbn = libraryService.addBook(titulo, autor, ano);
+            String isbn = libraryService.addBook(title, author, year);
             System.out.println("\n✅ Livro adicionado com sucesso!");
             System.out.println("📌 ISBN gerado: " + isbn);
             System.out.println("💡 Salve este ISBN para futuras operações de atualização ou remoção.");
@@ -151,29 +151,29 @@ public class ConsoleUI {
             System.out.println("  " + book);
             System.out.println("\n💡 Deixe em branco para manter o valor atual.");
 
-            String novoTitulo = getStringInput("Novo título: ");
-            String novoAutor = getStringInput("Novo autor: ");
-            String anoStr = getStringInput("Novo ano (ou -1 para remover o ano): ");
+            String newTitle = getStringInput("Novo título: ");
+            String newAuthor = getStringInput("Novo autor: ");
+            String yearStr = getStringInput("Novo ano (ou -1 para remover o ano): ");
 
-            Integer novoAno = null;
-            if (!anoStr.isEmpty()) {
+            Integer newYear = null;
+            if (!yearStr.isEmpty()) {
                 try {
-                    novoAno = Integer.parseInt(anoStr);
-                    if (novoAno != -1 && (novoAno < 0 || novoAno > 2100)) {
+                    newYear = Integer.parseInt(yearStr);
+                    if (newYear != -1 && (newYear < 0 || newYear > 2100)) {
                         System.out.println("\n⚠️  Ano inválido! O ano não será alterado.");
-                        novoAno = null;
+                        newYear = null;
                     }
                 } catch (NumberFormatException e) {
                     System.out.println("\n⚠️  Ano inválido! O ano não será alterado.");
                 }
             }
 
-            if (novoTitulo.isEmpty() && novoAutor.isEmpty() && novoAno == null) {
+            if (newTitle.isEmpty() && newAuthor.isEmpty() && newYear == null) {
                 System.out.println("\n↩️  Nenhuma alteração foi feita.");
                 return;
             }
 
-            boolean updated = libraryService.updateBook(isbn, novoTitulo, novoAutor, novoAno);
+            boolean updated = libraryService.updateBook(isbn, newTitle, newAuthor, newYear);
 
             if (updated) {
                 System.out.println("\n✅ Livro atualizado com sucesso!");
@@ -192,9 +192,9 @@ public class ConsoleUI {
         System.out.println("          BUSCAR LIVRO POR TÍTULO");
         System.out.println("─".repeat(50));
 
-        String titulo = getStringInput("Digite o título exato do livro: ");
+        String title = getStringInput("Digite o título exato do livro: ");
 
-        List<Book> results = libraryService.searchBooksByTitle(titulo);
+        List<Book> results = libraryService.searchBooksByTitle(title);
 
         if (results.isEmpty()) {
             System.out.println("\n❌ Nenhum livro encontrado.");
@@ -239,19 +239,19 @@ public class ConsoleUI {
 
         switch (sortChoice) {
             case 1:
-                sortBy = MergeSort.SortBy.TITULO;
+                sortBy = MergeSort.SortBy.TITLE;
                 sortLabel = "Título";
                 break;
             case 2:
-                sortBy = MergeSort.SortBy.AUTOR;
+                sortBy = MergeSort.SortBy.AUTHOR;
                 sortLabel = "Autor";
                 break;
             case 3:
-                sortBy = MergeSort.SortBy.ANO;
+                sortBy = MergeSort.SortBy.YEAR;
                 sortLabel = "Ano";
                 break;
             default:
-                sortBy = MergeSort.SortBy.TITULO;
+                sortBy = MergeSort.SortBy.TITLE;
                 sortLabel = "Título";
         }
 

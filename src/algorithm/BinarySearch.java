@@ -18,11 +18,11 @@ public class BinarySearch {
 
         int insertionPoint = binarySearchInsertionPoint(books, searchNormalized);
         boolean isExactMatch = insertionPoint < books.size() &&
-            normalize(books.get(insertionPoint).getTitulo()).equals(searchNormalized);
+            normalize(books.get(insertionPoint).getTitle()).equals(searchNormalized);
 
         if (isExactMatch) {
             int left = insertionPoint;
-            while (left >= 0 && normalize(books.get(left).getTitulo()).equals(searchNormalized)) {
+            while (left >= 0 && normalize(books.get(left).getTitle()).equals(searchNormalized)) {
                 results.add(0, books.get(left));
                 left--;
             }
@@ -32,7 +32,7 @@ public class BinarySearch {
             }
 
             int right = insertionPoint + 1;
-            while (right < books.size() && normalize(books.get(right).getTitulo()).equals(searchNormalized)) {
+            while (right < books.size() && normalize(books.get(right).getTitle()).equals(searchNormalized)) {
                 results.add(books.get(right));
                 right++;
             }
@@ -65,7 +65,7 @@ public class BinarySearch {
 
         while (left <= right) {
             int middle = left + (right - left) / 2;
-            String bookTitle = normalize(books.get(middle).getTitulo());
+            String bookTitle = normalize(books.get(middle).getTitle());
             int comparison = bookTitle.compareTo(searchNormalized);
 
             if (comparison == 0) {

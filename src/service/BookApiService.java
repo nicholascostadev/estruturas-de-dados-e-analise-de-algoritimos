@@ -72,24 +72,24 @@ public class BookApiService {
                 return null;
             }
 
-            String titulo = fields.get(0).trim();
-            String autor = fields.get(1).trim();
+            String title = fields.get(0).trim();
+            String author = fields.get(1).trim();
             String isbn = fields.get(2).trim();
-            String anoStr = fields.get(3).trim();
+            String yearStr = fields.get(3).trim();
 
-            Integer ano = null;
-            if (!anoStr.isEmpty()) {
+            Integer year = null;
+            if (!yearStr.isEmpty()) {
                 try {
-                    ano = Integer.parseInt(anoStr);
+                    year = Integer.parseInt(yearStr);
                 } catch (NumberFormatException e) {
                 }
             }
 
-            if (titulo.isEmpty() || autor.isEmpty() || isbn.isEmpty()) {
+            if (title.isEmpty() || author.isEmpty() || isbn.isEmpty()) {
                 return null;
             }
 
-            return new Book(titulo, autor, isbn, ano);
+            return new Book(title, author, isbn, year);
 
         } catch (Exception e) {
             System.err.println("Erro ao fazer parse da linha CSV: " + e.getMessage());
