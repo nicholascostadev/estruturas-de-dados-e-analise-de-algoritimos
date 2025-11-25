@@ -21,28 +21,42 @@ public class BinarySearch {
                 normalize(books.get(insertionPoint).getTitle()).equals(searchNormalized);
 
         if (isExactMatch) {
-            int left = insertionPoint;
-            while (left >= 0 && normalize(books.get(left).getTitle()).equals(searchNormalized)) {
-                results.add(0, books.get(left));
-                left--;
-            }
-
-            if (results.isEmpty() || !results.get(results.size() - 1).equals(books.get(insertionPoint))) {
-                results.add(books.get(insertionPoint));
-            }
-
-            int right = insertionPoint + 1;
-            while (right < books.size() && normalize(books.get(right).getTitle()).equals(searchNormalized)) {
-                results.add(books.get(right));
-                right++;
-            }
+            return findAllWithSameTitle(books, insertionPoint, searchNormalized);
         } else {
-            int start = Math.max(0, insertionPoint - 5);
-            int end = Math.min(books.size(), insertionPoint + 5);
+            return findNearbyBooks(books, insertionPoint, 5);
+        }
+    }
 
-            for (int i = start; i < end; i++) {
-                results.add(books.get(i));
-            }
+    private static List<Book> findAllWithSameTitle(List<Book> books, int insertionPoint, String searchNormalized) {
+        List<Book> results = new ArrayList<>();
+
+        int left = insertionPoint;
+        while (left >= 0 && normalize(books.get(left).getTitle()).equals(searchNormalized)) {
+            results.add(0, books.get(left));
+            left--;
+        }
+
+        if (results.isEmpty() || !results.get(results.size() - 1).equals(books.get(insertionPoint))) {
+            results.add(books.get(insertionPoint));
+        }
+
+        int right = insertionPoint + 1;
+        while (right < books.size() && normalize(books.get(right).getTitle()).equals(searchNormalized)) {
+            results.add(books.get(right));
+            right++;
+        }
+
+        return results;
+    }
+
+    private static List<Book> findNearbyBooks(List<Book> books, int insertionPoint, int range) {
+        List<Book> results = new ArrayList<>();
+
+        int start = Math.max(0, insertionPoint - range);
+        int end = Math.min(books.size(), insertionPoint + range);
+
+        for (int i = start; i < end; i++) {
+            results.add(books.get(i));
         }
 
         return results;

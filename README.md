@@ -1,21 +1,21 @@
-# Sistema de Gerenciamento de Biblioteca 📚
+# Sistema de Gerenciamento de Biblioteca
 
 Sistema de gerenciamento de biblioteca desenvolvido em Java com interface de terminal, implementando algoritmos customizados de ordenação e busca.
 
-## 📋 Descrição
+## Descrição
 
 Este projeto é um sistema de gerenciamento de biblioteca que permite realizar operações básicas (CRUD) em uma coleção de livros. Todos os dados são armazenados em memória e a interface é totalmente em português brasileiro.
 
-## ✨ Funcionalidades
+## Funcionalidades
 
-- **➕ Adicionar Livro**: Adiciona novos livros à biblioteca com título e autor
-- **🗑️ Remover Livro**: Remove livros usando o ISBN
-- **✏️ Atualizar Livro**: Atualiza informações de livros existentes
-- **🔍 Buscar Livro**: Busca rápida por título usando busca binária
-- **📖 Listar Todos**: Lista todos os livros ordenados alfabeticamente
-- **📊 Estatísticas**: Mostra informações sobre a biblioteca
+- **Adicionar Livro**: Adiciona novos livros à biblioteca com título e autor
+- **Remover Livro**: Remove livros usando o ISBN
+- **Atualizar Livro**: Atualiza informações de livros existentes
+- **Buscar Livro**: Busca rápida por título usando busca binária
+- **Listar Todos**: Lista todos os livros ordenados alfabeticamente
+- **Estatísticas**: Mostra informações sobre a biblioteca
 
-## 🎯 Características Técnicas
+## Características Técnicas
 
 ### Algoritmos Implementados (Sem uso de bibliotecas Java)
 
@@ -39,7 +39,7 @@ Este projeto é um sistema de gerenciamento de biblioteca que permite realizar o
 - ISBN único para cada livro (gerado com UUID)
 - Dados pré-populados para uso imediato
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 library-management-system/
@@ -61,7 +61,7 @@ library-management-system/
 └── README.md                        # Documentação
 ```
 
-## 🚀 Como Executar
+## Como Executar
 
 ### Opção 1: Usando o script (Linux/Mac)
 
@@ -84,7 +84,7 @@ java -cp bin Main
 
 - Java JDK 8 ou superior
 
-## 💡 Como Usar
+## Como Usar
 
 1. **Ao iniciar**: O sistema carrega ~458 livros do arquivo CSV local (165 em português, 293 em inglês)
 2. **Menu Principal**: Escolha uma opção digitando o número (1-7)
@@ -92,30 +92,30 @@ java -cp bin Main
 4. **Busca**: A busca é feita por título em português ou inglês
 5. **Ordenação**: Os livros são mantidos sempre ordenados alfabeticamente
 
-## 📚 Exemplo de Uso
+## Exemplo de Uso
 
 ```
 MENU PRINCIPAL
 ==================================================
-  1. 📚 Adicionar um livro
-  2. 🗑️  Remover um livro
-  3. ✏️  Atualizar um livro
-  4. 🔍 Buscar livro por título
-  5. 📖 Listar todos os livros
-  6. 📊 Ver estatísticas
-  7. 🚪 Sair
+  1. Adicionar um livro
+  2. Remover um livro
+  3. Atualizar um livro
+  4. Buscar livro por título
+  5. Listar todos os livros
+  6. Ver estatísticas
+  7. Sair
 ==================================================
 Escolha uma opção: 1
 
 Digite o título do livro: Dom Casmurro
 Digite o autor do livro: Machado de Assis
 
-✅ Livro adicionado com sucesso!
-📌 ISBN gerado: 1234567890123
-💡 Salve este ISBN para futuras operações de atualização ou remoção.
+Livro adicionado com sucesso!
+ISBN gerado: 1234567890123
+Salve este ISBN para futuras operações de atualização ou remoção.
 ```
 
-## 🔧 Detalhes de Implementação
+## Detalhes de Implementação
 
 ### Classe Book
 - Atributos: `titulo`, `autor`, `isbn`
@@ -138,7 +138,7 @@ Digite o autor do livro: Machado de Assis
 - Retorna todas as correspondências
 - Complexidade: O(log n)
 
-## 🎓 Objetivo Acadêmico
+## Objetivo Acadêmico
 
 Este projeto foi desenvolvido para a disciplina de **Estruturas de Dados e Análise de Algoritmos**, com foco em:
 - Implementação manual de algoritmos fundamentais
@@ -146,7 +146,7 @@ Este projeto foi desenvolvido para a disciplina de **Estruturas de Dados e Anál
 - Boas práticas de programação Java
 - Arquitetura em camadas (Model-Service-UI)
 
-## 📝 Autores Incluídos na Base Inicial
+## Autores Incluídos na Base Inicial
 
 A base de dados `base-books.csv` contém livros de diversos autores famosos:
 
@@ -162,7 +162,7 @@ A base de dados `base-books.csv` contém livros de diversos autores famosos:
 - Arthur Conan Doyle
 - Suzanne Collins
 
-## 📦 Formato do Arquivo CSV
+## Formato do Arquivo CSV
 
 O arquivo `base-books.csv` contém as seguintes colunas:
 - **titulo**: Título do livro (em português quando disponível, inglês caso contrário)
