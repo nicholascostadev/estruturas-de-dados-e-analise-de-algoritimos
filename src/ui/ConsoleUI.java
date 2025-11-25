@@ -53,7 +53,7 @@ public class ConsoleUI {
                     System.out.println("\nEncerrando o sistema... Até logo!");
                     break;
                 default:
-                    System.out.println("\n❌ Opção inválida! Por favor, escolha entre 1 e 7.");
+                    System.out.println("\nOpção inválida! Por favor, escolha entre 1 e 7.");
             }
 
             if (running) {
@@ -68,13 +68,13 @@ public class ConsoleUI {
         System.out.println("\n" + "=".repeat(50));
         System.out.println("                    MENU PRINCIPAL");
         System.out.println("=".repeat(50));
-        System.out.println("  1. 📚 Adicionar um livro");
-        System.out.println("  2. 🗑️  Remover um livro");
-        System.out.println("  3. ✏️  Atualizar um livro");
-        System.out.println("  4. 🔍 Buscar livro por título");
-        System.out.println("  5. 📖 Listar todos os livros");
-        System.out.println("  6. 📊 Ver estatísticas");
-        System.out.println("  7. 🚪 Sair");
+        System.out.println("  1. Adicionar um livro");
+        System.out.println("  2. Remover um livro");
+        System.out.println("  3. Atualizar um livro");
+        System.out.println("  4. Buscar livro por título");
+        System.out.println("  5. Listar todos os livros");
+        System.out.println("  6. Ver estatísticas");
+        System.out.println("  7. Sair");
         System.out.println("=".repeat(50));
     }
 
@@ -89,11 +89,11 @@ public class ConsoleUI {
 
         try {
             String isbn = libraryService.addBook(title, author, year);
-            System.out.println("\n✅ Livro adicionado com sucesso!");
-            System.out.println("📌 ISBN gerado: " + isbn);
-            System.out.println("💡 Salve este ISBN para futuras operações de atualização ou remoção.");
+            System.out.println("\nLivro adicionado com sucesso!");
+            System.out.println("ISBN gerado: " + isbn);
+            System.out.println("Salve este ISBN para futuras operações de atualização ou remoção.");
         } catch (IllegalArgumentException e) {
-            System.out.println("\n❌ Erro: " + e.getMessage());
+            System.out.println("\nErro: " + e.getMessage());
         }
     }
 
@@ -114,15 +114,15 @@ public class ConsoleUI {
             if (confirm.equalsIgnoreCase("s") || confirm.equalsIgnoreCase("sim")) {
                 boolean removed = libraryService.removeBook(isbn);
                 if (removed) {
-                    System.out.println("\n✅ Livro removido com sucesso!");
+                    System.out.println("\nLivro removido com sucesso!");
                 } else {
-                    System.out.println("\n❌ Erro ao remover o livro.");
+                    System.out.println("\nErro ao remover o livro.");
                 }
             } else {
-                System.out.println("\n↩️  Operação cancelada.");
+                System.out.println("\nOperação cancelada.");
             }
         } else {
-            System.out.println("\n❌ Livro não encontrado com o ISBN informado.");
+            System.out.println("\nLivro não encontrado com o ISBN informado.");
         }
     }
 
@@ -137,14 +137,14 @@ public class ConsoleUI {
         if (book != null) {
             System.out.println("\nLivro encontrado:");
             System.out.println("  " + book);
-            System.out.println("\n💡 Deixe em branco para manter o valor atual.");
+            System.out.println("\nDeixe em branco para manter o valor atual.");
 
             String newTitle = getStringInput("Novo título: ");
             String newAuthor = getStringInput("Novo autor: ");
             Integer newYear = getYearInput("Novo ano (ou -1 para remover o ano): ", true);
 
             if (newTitle.isEmpty() && newAuthor.isEmpty() && newYear == null) {
-                System.out.println("\n↩️  Nenhuma alteração foi feita.");
+                System.out.println("\nNenhuma alteração foi feita.");
                 return;
             }
 
@@ -152,17 +152,17 @@ public class ConsoleUI {
                 boolean updated = libraryService.updateBook(isbn, newTitle, newAuthor, newYear);
 
                 if (updated) {
-                    System.out.println("\n✅ Livro atualizado com sucesso!");
+                    System.out.println("\nLivro atualizado com sucesso!");
                     Book updatedBook = libraryService.findBookByIsbn(isbn);
                     System.out.println("  " + updatedBook);
                 } else {
-                    System.out.println("\n❌ Erro ao atualizar o livro.");
+                    System.out.println("\nErro ao atualizar o livro.");
                 }
             } catch (IllegalArgumentException e) {
-                System.out.println("\n❌ Erro: " + e.getMessage());
+                System.out.println("\nErro: " + e.getMessage());
             }
         } else {
-            System.out.println("\n❌ Livro não encontrado com o ISBN informado.");
+            System.out.println("\nLivro não encontrado com o ISBN informado.");
         }
     }
 
@@ -176,9 +176,9 @@ public class ConsoleUI {
         List<Book> results = libraryService.searchBooksByTitle(title);
 
         if (results.isEmpty()) {
-            System.out.println("\n❌ Nenhum livro encontrado.");
+            System.out.println("\nNenhum livro encontrado.");
         } else {
-            System.out.println("\n✅ " + results.size() + " livro(s) encontrado(s):");
+            System.out.println("\n" + results.size() + " livro(s) encontrado(s):");
             System.out.println("─".repeat(50));
             for (int i = 0; i < results.size(); i++) {
                 System.out.println((i + 1) + ". " + results.get(i));
@@ -192,7 +192,7 @@ public class ConsoleUI {
         System.out.println("─".repeat(50));
 
         if (libraryService.getTotalBooks() == 0) {
-            System.out.println("\n📭 A biblioteca está vazia.");
+            System.out.println("\nA biblioteca está vazia.");
             return;
         }
 
@@ -213,7 +213,7 @@ public class ConsoleUI {
                 break;
             }
 
-            System.out.println("❌ Opção inválida! Por favor, escolha entre 1 e 3.");
+            System.out.println("Opção inválida! Por favor, escolha entre 1 e 3.");
         }
 
         switch (sortChoice) {
@@ -236,7 +236,7 @@ public class ConsoleUI {
 
         List<Book> allBooks = libraryService.listAllBooksSortedBy(sortBy);
 
-        System.out.println("\n✅ Ordenado por: " + sortLabel);
+        System.out.println("\nOrdenado por: " + sortLabel);
         System.out.println("Total: " + allBooks.size() + " livro(s)");
         System.out.println("─".repeat(50));
 
@@ -263,7 +263,7 @@ public class ConsoleUI {
                 String input = scanner.nextLine().trim();
                 return Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("❌ Por favor, digite um número válido.");
+                System.out.println("Por favor, digite um número válido.");
             }
         }
     }
@@ -292,9 +292,9 @@ public class ConsoleUI {
 
                 if (year < 0 || year > currentYear) {
                     if (allowRemove) {
-                        System.out.println("❌ Ano inválido! Digite um ano entre 0 e " + currentYear + ", ou -1 para remover. Tente novamente ou deixe em branco.");
+                        System.out.println("Ano inválido! Digite um ano entre 0 e " + currentYear + ", ou -1 para remover. Tente novamente ou deixe em branco.");
                     } else {
-                        System.out.println("❌ Ano inválido! O ano deve estar entre 0 e " + currentYear + ". Tente novamente ou deixe em branco.");
+                        System.out.println("Ano inválido! O ano deve estar entre 0 e " + currentYear + ". Tente novamente ou deixe em branco.");
                     }
                     continue;
                 }
@@ -302,9 +302,9 @@ public class ConsoleUI {
                 return year;
             } catch (NumberFormatException e) {
                 if (allowRemove) {
-                    System.out.println("❌ Por favor, digite um número válido, -1 para remover, ou deixe em branco.");
+                    System.out.println("Por favor, digite um número válido, -1 para remover, ou deixe em branco.");
                 } else {
-                    System.out.println("❌ Por favor, digite um número válido ou deixe em branco.");
+                    System.out.println("Por favor, digite um número válido ou deixe em branco.");
                 }
             }
         }
