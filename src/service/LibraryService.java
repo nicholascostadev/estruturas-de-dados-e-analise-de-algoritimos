@@ -128,10 +128,6 @@ public class LibraryService {
         return null;
     }
 
-    public List<Book> listAllBooks() {
-        return new ArrayList<>(books);
-    }
-
     public List<Book> listAllBooksSortedBy(MergeSort.SortBy sortBy) {
         List<Book> sortedBooks = new ArrayList<>(books);
         MergeSort.sortBy(sortedBooks, sortBy);
@@ -184,12 +180,13 @@ public class LibraryService {
 
         if (!books.isEmpty()) {
             stats.append("Primeiro livro (alfabeticamente): ").append(books.get(0).getTitle()).append("\n");
-            stats.append("Último livro (alfabeticamente): ").append(books.get(books.size() - 1).getTitle()).append("\n");
+            stats.append("Último livro (alfabeticamente): ").append(books.get(books.size() - 1).getTitle())
+                    .append("\n");
 
             AuthorCount topAuthor = getAuthorWithMostBooks();
             if (topAuthor != null) {
                 stats.append("Autor com mais livros: ").append(topAuthor.author)
-                     .append(" (").append(topAuthor.count).append(" livros)\n");
+                        .append(" (").append(topAuthor.count).append(" livros)\n");
             }
         }
 

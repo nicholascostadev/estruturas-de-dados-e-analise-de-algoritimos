@@ -11,6 +11,10 @@ import java.util.List;
 public class BookApiService {
 
     private static final String CSV_FILE_PATH = "base-books.csv";
+    private static final int TITLE_INDEX = 0;
+    private static final int AUTHOR_INDEX = 1;
+    private static final int ISBN_INDEX = 2;
+    private static final int YEAR_INDEX = 3;
 
     public static List<Book> loadBooksFromCsv() {
         List<Book> books = new ArrayList<>();
@@ -72,16 +76,17 @@ public class BookApiService {
                 return null;
             }
 
-            String title = fields.get(0).trim();
-            String author = fields.get(1).trim();
-            String isbn = fields.get(2).trim();
-            String yearStr = fields.get(3).trim();
+            String title = fields.get(TITLE_INDEX).trim();
+            String author = fields.get(AUTHOR_INDEX).trim();
+            String isbn = fields.get(ISBN_INDEX).trim();
+            String yearStr = fields.get(YEAR_INDEX).trim();
 
             Integer year = null;
             if (!yearStr.isEmpty()) {
                 try {
                     year = Integer.parseInt(yearStr);
                 } catch (NumberFormatException e) {
+                    System.err.println("Erro ao converter ano para inteiro: " + e.getMessage());
                 }
             }
 
