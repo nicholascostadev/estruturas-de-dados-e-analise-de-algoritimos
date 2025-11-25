@@ -22,7 +22,7 @@ public class MergeSort {
     public static void merge(List<Book> books, int start, int end, SortBy sortBy) {
         int middle;
         if (start < end) {
-            middle = (start + end) / 2;
+            middle = start + (end - start) / 2; // Avoid overflow
             merge(books, start, middle, sortBy);
             merge(books, middle + 1, end, sortBy);
             intercalate(books, start, end, middle, sortBy);
