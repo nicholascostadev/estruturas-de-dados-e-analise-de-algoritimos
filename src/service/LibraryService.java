@@ -143,7 +143,7 @@ public class LibraryService {
     }
 
     private void sortBooks() {
-        MergeSort.sort(books);
+        MergeSort.sortBy(books, MergeSort.SortBy.TITLE);
     }
 
     private String generateUniqueIsbn() {

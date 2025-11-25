@@ -11,10 +11,6 @@ public class MergeSort {
         YEAR
     }
 
-    public static void sort(List<Book> books) {
-        sortBy(books, SortBy.TITLE);
-    }
-
     public static void sortBy(List<Book> books, SortBy sortBy) {
         if (books == null || books.size() <= 1) {
             return;
@@ -81,25 +77,34 @@ public class MergeSort {
     }
 
     private static int compareTitles(String title1, String title2) {
-        if (title1 == null && title2 == null) return 0;
-        if (title1 == null) return -1;
-        if (title2 == null) return 1;
+        if (title1 == null && title2 == null)
+            return 0;
+        if (title1 == null)
+            return -1;
+        if (title2 == null)
+            return 1;
 
         return title1.toLowerCase().compareTo(title2.toLowerCase());
     }
 
     private static int compareAuthors(String author1, String author2) {
-        if (author1 == null && author2 == null) return 0;
-        if (author1 == null) return -1;
-        if (author2 == null) return 1;
+        if (author1 == null && author2 == null)
+            return 0;
+        if (author1 == null)
+            return -1;
+        if (author2 == null)
+            return 1;
 
         return author1.toLowerCase().compareTo(author2.toLowerCase());
     }
 
     private static int compareYears(Integer year1, Integer year2) {
-        if (year1 == null && year2 == null) return 0;
-        if (year1 == null) return 1;
-        if (year2 == null) return -1;
+        if (year1 == null && year2 == null)
+            return 0;
+        if (year1 == null)
+            return 1;
+        if (year2 == null)
+            return -1;
 
         return year1.compareTo(year2);
     }
