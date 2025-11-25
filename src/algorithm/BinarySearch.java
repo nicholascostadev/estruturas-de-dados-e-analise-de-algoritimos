@@ -18,7 +18,7 @@ public class BinarySearch {
 
         int insertionPoint = binarySearchInsertionPoint(books, searchNormalized);
         boolean isExactMatch = insertionPoint < books.size() &&
-            normalize(books.get(insertionPoint).getTitle()).equals(searchNormalized);
+                normalize(books.get(insertionPoint).getTitle()).equals(searchNormalized);
 
         if (isExactMatch) {
             int left = insertionPoint;
@@ -55,7 +55,7 @@ public class BinarySearch {
         String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
 
         normalized = normalized.replaceAll("\\p{M}", "");
-        
+
         return normalized.toLowerCase();
     }
 
@@ -78,25 +78,5 @@ public class BinarySearch {
         }
 
         return left;
-    }
-
-    public static List<Book> getClosestBooks(List<Book> books, String searchTitle) {
-        List<Book> results = new ArrayList<>();
-
-        if (books == null || books.isEmpty() || searchTitle == null || searchTitle.trim().isEmpty()) {
-            return results;
-        }
-
-        String searchLower = searchTitle.toLowerCase().trim();
-        int insertionPoint = binarySearchInsertionPoint(books, searchLower);
-
-        int start = Math.max(0, insertionPoint - 5);
-        int end = Math.min(books.size(), insertionPoint + 5);
-
-        for (int i = start; i < end; i++) {
-            results.add(books.get(i));
-        }
-
-        return results;
     }
 }
